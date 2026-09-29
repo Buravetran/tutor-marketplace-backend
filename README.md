@@ -1,57 +1,60 @@
-# Tutor Marketplace — Backend (Week 1: Setup + Auth)
+# Tutor Marketplace
 
-## Setup
+A platform connecting students who need help (exit exam prep, coding, English, and more) with tutors who can teach it — booking, ratings, and reviews included.
 
-1. Install dependencies:
-   ```
-   npm install
-   ```
+**Live API:** https://tutor-marketplace-backend-production.up.railway.app
 
-2. Create a Postgres database, then copy `.env.example` to `.env` and fill in your real values:
-   ```
-   cp .env.example .env
-   ```
+## Why I built this
 
-3. Run the schema to create tables:
-   ```
-   psql $DATABASE_URL -f schema.sql
-   ```
+As a Computer Science graduate preparing for my own exit exam, I saw how hard it was for students around me to find the right person to help with a specific subject. This project solves that: a simple way to search for a tutor by subject, book a session, and leave a review afterward — the same loop I wished existed for myself and my classmates.
 
-4. Start the server:
-   ```
-   npm run dev
-   ```
+## Features
+
+- **Auth** — signup/login for two roles: learner and tutor, with JWT-based sessions
+- **Tutor profiles** — bio, subjects taught, hourly rate (or free), availability
+- **Search** — find tutors by subject, sorted by rating
+- **Booking flow** — request a session, tutor accepts/declines, either side marks it complete
+- **Reviews** — learners rate and review after a completed session, feeding into the tutor's average rating
+
+## Tech Stack
+
+- **Backend:** Node.js, Express
+- **Database:** PostgreSQL
+- **Auth:** JWT, bcrypt for password hashing
+- **Hosting:** Railway (API + database)
+
+## API Overview
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/auth/signup` | Create an account (learner or tutor) |
+| POST | `/auth/login` | Log in, returns a JWT |
+| GET | `/tutors?subject=X` | Search tutors by subject |
+| GET | `/tutors/:id` | Get a tutor's public profile |
+| PUT | `/tutors/me` | Create/update your own tutor profile (tutor only) |
+| POST | `/bookings` | Request a session (learner only) |
+| GET | `/bookings/mine` | List your bookings (either role) |
+| PATCH | `/bookings/:id` | Accept/decline/complete a booking |
+| POST | `/reviews` | Review a completed booking (learner only) |
+| GET | `/tutors/:id/reviews` | List a tutor's reviews |
+
+## Running Locally
+
+```bash
+npm install
+cp .env.example .env   # then fill in your DATABASE_URL and JWT_SECRET
+psql $DATABASE_URL -f schema.sql
+npm run dev
+```
 
 Server runs on `http://localhost:5000` by default.
 
-## Test the auth endpoints
+## What's Next
 
-**Signup**
-```
-POST /auth/signup
-{
-  "name": "Bura",
-  "email": "bura@example.com",
-  "password": "test1234",
-  "role": "learner"
-}
-```
+- React frontend
+- Curated learning resources per subject, with link previews
+- In-app messaging between learner and tutor
 
-**Login**
-```
-POST /auth/login
-{
-  "email": "bura@example.com",
-  "password": "test1234"
-}
-```
+---
 
-Both return `{ user, token }`. Use the token as `Authorization: Bearer <token>` on any protected route later.
-
-## What's next
-
-- Week 2: tutor profile routes + subject search (`/tutors`)
-- Week 3: booking routes (`/bookings`)
-- Week 4: reviews + resources
-
-Ask Claude to build the next piece whenever you're ready.
+Built by [Biruk Girma (Bura)](https://github.com/Buravetran)
