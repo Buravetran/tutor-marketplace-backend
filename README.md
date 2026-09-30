@@ -1,12 +1,14 @@
-# Tutor Marketplace
+# Tutor Marketplace — Backend
 
-A platform connecting students who need help (exit exam prep, coding, English, and more) with tutors who can teach it — booking, ratings, and reviews included.
+A REST API connecting students who need help (exit exam prep, coding, English, and more) with tutors who can teach it — booking, ratings, and reviews included.
 
 **Live API:** https://tutor-marketplace-backend-production.up.railway.app
+**Live App (frontend):** https://tutor-marketplace-frontend.vercel.app
+**Frontend repo:** https://github.com/Buravetran/tutor-marketplace-frontend
 
 ## Why I built this
 
-As a Computer Science graduate preparing for my own exit exam, I saw how hard it was for students around me to find the right person to help with a specific subject. This project solves that: a simple way to search for a tutor by subject, book a session, and leave a review afterward — the same loop I wished existed for myself and my classmates.
+As a Computer Science graduate preparing for my own exit exam, I saw how hard it was for students around me to find the right person to help with a specific subject. This project solves that: a simple way to search for a tutor by subject, book a session, and leave a review afterward.
 
 ## Features
 
@@ -22,6 +24,17 @@ As a Computer Science graduate preparing for my own exit exam, I saw how hard it
 - **Database:** PostgreSQL
 - **Auth:** JWT, bcrypt for password hashing
 - **Hosting:** Railway (API + database)
+
+## Architecture
+
+```mermaid
+flowchart LR
+    Client[React Frontend<br/>Vercel] -->|HTTPS requests| API[Express API]
+    API -->|JWT verify| Auth[Auth Middleware]
+    API --> Routes[Routes: auth, tutors, bookings, reviews]
+    Routes --> DB[(PostgreSQL)]
+    API -.deployed on.-> Railway[Railway]
+```
 
 ## API Overview
 
@@ -51,7 +64,6 @@ Server runs on `http://localhost:5000` by default.
 
 ## What's Next
 
-- React frontend
 - Curated learning resources per subject, with link previews
 - In-app messaging between learner and tutor
 
